@@ -4,6 +4,7 @@ import tkinter.scrolledtext as scrolledtext
 from dataclasses import dataclass
 import sys
 
+#Avoid the file in which the data is stored to be searched in the temporary files directory of the computer
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -12,12 +13,10 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
-#Automate the path changing to the directory where the .csv is
-#dir_path = os.path.dirname(os.path.realpath(__file__))
-#os.chdir(dir_path)
-
+#Loading the basic GUI
 class baseGUI: 
     def __init__(self):
+        #Load the window
         self.window = tk.Tk()
         self.window.geometry("1100x500")
 
@@ -56,13 +55,17 @@ class baseGUI:
     def update(self):
         pass
 
-
+#Link the GUI with the interface loaded as a parent of this class
 class iGEM__team_search_GUI(baseGUI):
+    #button mechanics 
     def confirm(self):
         self.button.config(text='Running...')
+        #insert message in the console
         self.logs.insert(tk.END, "The program started, please wait...\n")
+        #when button is pressed, start the program
         self.button.after(1000, self.keywords_treatment)
 
+    #start looking for subjetcs by calling the function subject_finder
     def keywords_treatment(self):
         self.keywords = str(self.textbox_research.get(1.0, "end-1c")).split(',')
         print(self.keywords)
@@ -76,6 +79,7 @@ class iGEM__team_search_GUI(baseGUI):
 
         self.button.config(text="Start research")
 
+#initialize dataclasses for each teams : url, village and abstract
 @dataclass
 class team:
     url : str
@@ -84,12 +88,15 @@ class team:
 
 def subject_finder(keywords):
     results = []
+    #load data
     data = open('data\\all_team_data.txt', 'r', encoding = 'utf-8')
-    
+
+    #load the abstract according to the dataclasses initialized
     all_abstract = [team(url = line.split('\t')[0],
                          village = line.split('\t')[1],
                          abstract = line.split('\t')[-1].strip('\n').lower()) for line in data.readlines() if line.split('\t')[-1].strip('\n').lower() != '']
-    
+
+    #look for the keywords
     n = 1
     for i in all_abstract:
         n+=1
