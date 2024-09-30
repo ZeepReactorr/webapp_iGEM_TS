@@ -1,2 +1,4 @@
 # iGEM_team_search
-An interactive tool with a rudimentary graphic interface to search information on previous iGEM teams 
+
+An interactive tool with a rudimentary graphic interface to search information on previous iGEM teams.
+Repository where you can find in the Tags the stand-alone application for the team search.
